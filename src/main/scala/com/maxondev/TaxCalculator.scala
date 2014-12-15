@@ -7,7 +7,7 @@ package com.maxondev
 
 // http://ayende.com/blog/108545/the-tax-calculation-challenge
 class TaxCalculator {
-  private val rates = Seq(
+  private val taxWindows = Seq(
     TaxForWindow(1, 5070, 10),
     TaxForWindow(5071, 8660, 14),
     TaxForWindow(8661, 14070, 23),
@@ -19,18 +19,14 @@ class TaxCalculator {
   def calculate(salary: Double): Double = {
     require(salary >= 0)
 
-    def ratesForSalary = rates.reverse.dropWhile(_.from > salary)
-    calculateInternal(salary, ratesForSalary)
+    def windowsForSalary = taxWindows.reverse.dropWhile(_.from > salary)
+    calculateInternal(salary, windowsForSalary)
   }
 
+  private def taxForWindow(salary: Double, window: TaxForWindow): Double = (salary - (window.from - 1)) * window.percentage / 100
 
-  private def taxForWindow(salary: Double, window: TaxForWindow): Double = {
-    (salary - (window.from - 1)) * window.percentage / 100
-  }
-
-
-  private def calculateInternal(salary: Double, rates: Seq[TaxForWindow]): Double =
-    rates match {
+  private def calculateInternal(salary: Double, windows: Seq[TaxForWindow]): Double =
+    windows match {
       case head :: tail => calculateInternal(head.from - 1, tail) + taxForWindow(salary, head)
       case Nil => 0
     }
@@ -40,19 +36,21 @@ class TaxCalculator {
 
 
 // Some other solutions -
+
 // 1. tail recursion - will be converted to a loop at compile time.
 
 // @scala.annotation.tailrec
-// private def calculateInternal(salary: Double, accumulator: Double, rates: Seq[TaxForWindow]): Double =
-//   rates match {
-//   case head :: tail => calculateTailrec(head.from - 1, accumulator + taxForWindow(salary, head), tail)
+// private def calculateInternal2(salary: Double, accumulator: Double, windows: Seq[TaxForWindow]): Double =
+//   windows match {
+//   case head :: tail => calculateInternal2(head.from - 1, accumulator + taxForWindow(salary, head), tail)
 //   case Nil => accumulator
 // }
 
 
 // 2. using .fold
-// private def calculateInternal(salary: Double, rates: Seq[TaxForWindow]): Double =
-//   rates.foldLeft(0d)((accum, taxFor) => {
+
+// private def calculateInternal3(salary: Double, windows: Seq[TaxForWindow]): Double =
+//   windows.foldLeft(0d)((accum, taxFor) => {
 //   val taxForWindow = Math.min(taxFor.to - (taxFor.from - 1), salary - (taxFor.from - 1))
 //   accum + (taxForWindow * (taxFor.percentage / 100))
 // })
