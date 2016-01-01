@@ -24,10 +24,6 @@ class TaxCalculatorTest extends Specification {
       calc.calculate(5800) must beCloseTo(609.2)
     }
 
-    "3rd level of tax" in new ctx {
-      calc.calculate(9000) must beCloseTo(1087.8)
-    }
-
     "last level of tax" in new ctx {
       calc.calculate(50000) must beCloseTo(15068.1)
     }
