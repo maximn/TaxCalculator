@@ -6,4 +6,4 @@ scalaVersion := "2.12.6"
 
 resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo)
 
-libraryDependencies ++= Seq("org.specs2" %% "specs2-core" % "3.+" % "test")
+libraryDependencies ++= Seq("org.specs2" %% "specs2-core" % "4.15.0" % "test")
