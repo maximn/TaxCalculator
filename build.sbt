@@ -2,7 +2,7 @@ name := "TaxCalculator"
 
 version := "1.0.0-SNAPSHOT"
 
-scalaVersion := "3.3.4"
+scalaVersion := "3.3.8"
 
 resolvers ++= Resolver.sonatypeOssRepos("snapshots") ++ Resolver.sonatypeOssRepos("releases")
 
