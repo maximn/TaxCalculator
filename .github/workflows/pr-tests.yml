@@ -43,7 +43,7 @@ jobs:
 
     - name: TestGlance
       if: always()
-      uses: testglance/action@8826a1e96248dc0d5048b10f72782a5ed34522d7 # v1
+      uses: testglance/action@b2a4a5188d1bbf5ee0867ca3678b2c6107b03955 # v1
       with:
         github-token: ${{ github.token }}
         report-path: '**/target/test-reports/TEST-*.xml'
